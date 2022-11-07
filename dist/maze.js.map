@@ -1,1 +1,0 @@
-{"version":3,"file":"maze.js","sourceRoot":"","sources":["../src/maze.ts"],"names":[],"mappings":";;;AAAa,QAAA,SAAS,GAAG,CAAC,GAAG,EAAE,GAAG,EAAE,GAAG,EAAE,GAAG,CAAU,CAAC;AAIvD,SAAgB,MAAM,CAAC,KAAa;IAClC,OAAO,iBAAS,CAAC,QAAQ,CAAC,KAAa,CAAC,CAAA;AAC1C,CAAC;AAFD,wBAEC"}
