@@ -1,9 +1,8 @@
-import { Queue } from "./Queue"
 import { Tile } from "./maze";
 
 
 export default class BFS {
-    private queue: Queue<BfsElement>;
+    private queue: BfsElement[];
     private maze: Tile[][];
     private rowLength: number;
     private columnLength: number;
@@ -17,10 +16,9 @@ export default class BFS {
     private visited: Set<string>
 
     constructor (maze: Tile[][]) {
-        this.queue = new Queue();
         this.maze = maze as Tile[][];
         let startCord: Cord = this.findCord('S')
-        this.queue.add([startCord, 0, [startCord]])
+        this.queue = [[startCord, 0, [startCord]]];
 
         this.rowLength = this.maze.length
         this.columnLength = this.maze[0].length
@@ -45,10 +43,10 @@ export default class BFS {
 
     serach(): BfsResult|null {
         while(this.queue.length !== 0){
-            const ele = this.queue.pop()
+            const ele = this.queue.shift()!
             const cord: Cord = ele[0]
-            this.visited.add(cord.toString())
             const distance: number = ele[1]
+            this.visited.add(cord.toString())
 
             if(this.maze[cord[0]][cord[1]] === "E"){
                 return {
@@ -65,7 +63,7 @@ export default class BFS {
                      this.maze[newCord[0]][newCord[1]] === "#" || this.visited.has(newCord.toString())){
                         continue
                 }
-                this.queue.addLeft([newCord, distance + 1, [...ele[2], newCord]])
+                this.queue.push([newCord, distance + 1, [...ele[2], newCord]])
             }
         }
         return null
