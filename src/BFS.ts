@@ -1,4 +1,4 @@
-import { Tile } from "./maze";
+import { Tile } from "./types/maze";
 
 
 export default class BFS {
@@ -41,7 +41,11 @@ export default class BFS {
         return [row, col]
     }
 
-    serach(): BfsResult|null {
+    serach(): BfsResult {
+        let result: BfsResult = {
+            "distance": -1,
+            "path": []
+        }
         while(this.queue.length !== 0){
             const ele = this.queue.shift()!
             const cord: Cord = ele[0]
@@ -49,10 +53,9 @@ export default class BFS {
             this.visited.add(cord.toString())
 
             if(this.maze[cord[0]][cord[1]] === "E"){
-                return {
-                    "distance": ele[1],
-                    "path": ele[2]
-                }
+                result.distance = ele[1]
+                result.path = ele[2]
+                return result
             }
 
             for (const direction of Object.values(this.directions)) {
@@ -66,8 +69,6 @@ export default class BFS {
                 this.queue.push([newCord, distance + 1, [...ele[2], newCord]])
             }
         }
-        return null
+        return result
     }
 }
-
-// const maze: Tile[][] = file.split(EOL).map(l => [...l].filter(c => isTile(c))) as Tile[][]

@@ -1,4 +1,4 @@
-Maze path finder using BFS (Breadth-first search) algorithm
+Maze path finder using BFS (Breadth-first search) algorithm with express server
 
 Available commands:
 
