@@ -10,19 +10,13 @@
     </div>
 
     <div class="toolBox">
-        <!-- <select v-model="selected" @change="$emit('update:tool', selected)">
-            <option value="#">Wall</option>
-            <option value=".">Path</option>
-        </select> -->
         <div class="tool" @click="$emit('update:tool', '#')">Wall</div>
         <div class="tool" @click="$emit('update:tool', '.')">Path</div>
         <div class="tool" @click="$emit('update:tool', 'S')">Start</div>
         <div class="tool" @click="$emit('update:tool', 'E')">End</div>
+        <div class="tool" @click="solve">Solve</div>
+        <div class="tool" @click="clear">Clear</div>
     </div>
-    <button @click="solve" class="">Solve</button>
-    <button @click="clear" class="">Clear</button>
-
-
 </template>
 
 <script setup lang="ts">
@@ -36,10 +30,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:tool', 'update:distance'])
-
-
-// for select
-const selected = "#"
 
 const tiles = ref<Tile[][]>([...Array(10).keys()].map((i) => {
     return [...Array(10).keys()].map(j => { return { id: `${i}${j}`, value: ".", path: false } })
@@ -100,7 +90,6 @@ const clear = () => {
 
 }
 
-// TODO change
 const formatMaze = (maze: Ref<Tile[][]>) => {
     return maze.value.map(row => row.map(tile => tile.value).join("")).join('\n')
 }
@@ -137,7 +126,7 @@ const formatMaze = (maze: Ref<Tile[][]>) => {
 .toolBox {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 60px);
+    grid-template-rows: repeat(3, 60px);
     gap: 20px;
 }
 
