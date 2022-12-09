@@ -13,9 +13,8 @@ import { ref, type Ref } from "vue";
 import Maze from "./components/Maze.vue";
 import type { TileValue } from "./types/Tile";
 
-const tool: Ref<TileValue> = ref("#")
-const distance = ref(0)
-
+const tool: Ref<TileValue> = ref("#");
+const distance = ref(0);
 </script>
 
 <style scoped>
