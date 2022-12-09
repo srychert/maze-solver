@@ -1,7 +1,9 @@
-type Tile = {
+export type TileValue = "." | "#" | "S" | "E";
+
+export type Tile = {
     id: string;
     path: boolean;
-    value: "." | "#" | "S" | "E";
+    value: TileValue;
     bg?: string
 };
 

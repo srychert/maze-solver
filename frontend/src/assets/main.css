@@ -2,9 +2,21 @@
 
 :root {
     --bg: #393E46;
-    --green: #6D9886;
+    --green: #40bf6a;
+    --red: #bf4040;
+    --blue: #407fbf;
     --cream: #F2E7D5;
     --light: #F7F7F7;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
 }
 
 body {

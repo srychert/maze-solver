@@ -10,22 +10,23 @@
     </div>
 
     <div class="toolBox">
-        <div class="tool" @click="$emit('update:tool', '#')">Wall</div>
-        <div class="tool" @click="$emit('update:tool', '.')">Path</div>
-        <div class="tool" @click="$emit('update:tool', 'S')">Start</div>
-        <div class="tool" @click="$emit('update:tool', 'E')">End</div>
+        <div class="tool" @click="handleToolClick('#', 'bg')">Wall</div>
+        <div class="tool" @click="handleToolClick('.', 'light')">Path</div>
+        <div class="tool" @click="handleToolClick('S', 'red')">Start</div>
+        <div class="tool" @click="handleToolClick('E', 'blue')">End</div>
         <div class="tool" @click="solve">Solve</div>
         <div class="tool" @click="clear">Clear</div>
     </div>
 </template>
 
 <script setup lang="ts">
+import type { TileValue } from '@/types/Tile';
 import type Tile from '@/types/Tile';
 import axios from 'axios';
 import { ref, type Ref } from 'vue';
 
 const props = defineProps<{
-    tool?: string,
+    tool: TileValue,
     distance: number
 }>()
 
@@ -35,21 +36,47 @@ const tiles = ref<Tile[][]>([...Array(10).keys()].map((i) => {
     return [...Array(10).keys()].map(j => { return { id: `${i}${j}`, value: ".", path: false } })
 }));
 
+const getCssVariable = (name: string) => {
+    return getComputedStyle(document.documentElement).getPropertyValue(name)
+}
+
+type Color = 'red' | 'blue' | 'bg' | 'light'
+
+const colors: {
+    [key in Color]: string
+} = {
+    "red": getCssVariable('--red'),
+    "blue": getCssVariable('--blue'),
+    "bg": getCssVariable('--bg'),
+    "light": getCssVariable('--light')
+}
+
+const borderColor = ref(colors.light)
+
+const handleToolClick = (value: TileValue, color: Color) => {
+    emit('update:tool', value)
+    borderColor.value = colors[color]
+}
+
+const formatMaze = (maze: Ref<Tile[][]>) => {
+    return maze.value.map(row => row.map(tile => tile.value).join("")).join('\n')
+}
+
 const mark = (tile: Tile) => {
-    tile.value = props.tool as "#" | "." | "S" | "E"
+    tile.value = props.tool
 
     switch (tile.value) {
         case "S":
-            tile.bg = "red"
+            tile.bg = colors.red
             break
         case "E":
-            tile.bg = "blue"
+            tile.bg = colors.blue
             break;
         case ".":
             tile.bg = undefined
             break
         case "#":
-            tile.bg = "black"
+            tile.bg = colors.bg
             break
         default:
             break;
@@ -90,10 +117,6 @@ const clear = () => {
 
 }
 
-const formatMaze = (maze: Ref<Tile[][]>) => {
-    return maze.value.map(row => row.map(tile => tile.value).join("")).join('\n')
-}
-
 </script>
 
 <style scoped>
@@ -115,12 +138,16 @@ const formatMaze = (maze: Ref<Tile[][]>) => {
     aspect-ratio: 1 / 1;
     width: 100%;
     background-color: var(--light);
-    color: black;
+    transition: background-color 0.5s ease-out;
     cursor: pointer;
 }
 
+.tile:hover {
+    border: 2px dashed v-bind('borderColor');
+}
+
 .path {
-    background-color: yellowgreen;
+    background-color: var(--green);
 }
 
 .toolBox {
@@ -131,8 +158,7 @@ const formatMaze = (maze: Ref<Tile[][]>) => {
 }
 
 .tool {
-    background-color: yellowgreen;
-    color: black;
+    background-color: var(--green);
     font-weight: 700;
 
     display: grid;

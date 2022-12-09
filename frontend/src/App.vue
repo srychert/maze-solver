@@ -1,16 +1,19 @@
 <template>
   <h1>Maze Solver</h1>
-  <h2 v-if="distance">Distance: {{ distance }}</h2>
+  <Transition name="distance">
+    <h2 v-show="distance">Distance: {{ distance }}</h2>
+  </Transition>
   <div class="main">
     <Maze v-model:tool="tool" v-model:distance="distance"></Maze>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import Maze from "./components/Maze.vue";
+import type { TileValue } from "./types/Tile";
 
-const tool = ref("#")
+const tool: Ref<TileValue> = ref("#")
 const distance = ref(0)
 
 </script>
@@ -19,6 +22,17 @@ const distance = ref(0)
 h1,
 h2 {
   text-align: center;
+  color: var(--cream);
+}
+
+.distance-enter-active,
+.distance-leave-active {
+  transition: opacity 1s ease-in-out;
+}
+
+.distance-enter-from,
+.distance-leave-to {
+  opacity: 0;
 }
 
 .main {
@@ -27,7 +41,7 @@ h2 {
   margin-right: auto;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: 1fr 200px;
+  grid-template-columns: 0.8fr 200px;
   gap: 60px;
 }
 
