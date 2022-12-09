@@ -9,7 +9,7 @@ dotenv.config();
 const app: Express = express();
 app.use(express.json())
 app.use(cors())
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.post('/bfs', (req: Request, res: Response) => {
     try {

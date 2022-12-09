@@ -1,0 +1,19 @@
+FROM node:19-alpine
+
+WORKDIR /app
+
+COPY ./package.json ./
+COPY ./package-lock.json ./
+
+# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
+RUN npm ci
+RUN npm install -g serve
+
+COPY . .
+RUN npm run build
+
+# Expose the port on which the app will be running (3000 is the default that serve uses)
+EXPOSE 3000
+
+# Start the app
+CMD [ "npx", "serve", "dist" ]
